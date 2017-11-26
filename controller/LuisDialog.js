@@ -15,12 +15,13 @@ exports.startDialog = function (bot) {
             //var customer = builder.EntityRecognizer.findEntity(args.intent.entities, 'customerID');
             var customer = "2728827";
             var account = builder.EntityRecognizer.findEntity(args.intent.entities, 'account');
-
+            var amount = "6000"
             // Checks if the food entity was found
             if (account) {
-                session.send('Checking balance of %s', account.entity);    
-                balance.displayAccountBalance(session, customer, account.entity);
-                // Insert logic here later
+                //session.send('Checking balance of %s', account.entity);    
+                //balance.displayAccountBalance(session, customer, account.entity);
+        
+                balance.updateAccountBalance(session, customer, account.entity);
             } else {
                 session.send("No account balance identified! Please try again");
             

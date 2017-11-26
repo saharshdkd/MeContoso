@@ -15,12 +15,79 @@ function handleAccountBalanceResponse(message, session, customer, account){
         var balance = balanceResponse[index].balance;
         var accType = balanceResponse[index].accountType;
 
+        //console.log(account);
+        //console.log(account.toLowerCase());
+
         if(customer === custIDRecieved && account.toLowerCase() === accType.toLowerCase()) {
             session.send("Your %s balance is %s", account, balance);
         }
     }
 }
 
+exports.updateAccountBalance = function updateData (session, customer, account) {
+    var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
+
+    //console.log(amount); //this one works
+    rest.getAccountBalance(url, session, customer, account, handleUpdateBalanceResponse)
+}
+
+function handleUpdateBalanceResponse (message, session, customer, account) {
+
+        var upBal = JSON.parse(message);
+
+        for (var index in upBal) {
+            var custIDRecieved = upBal[index].customerID;
+            var accType = upBal[index].accountType;
+    
+            if(customer === custIDRecieved && account.toLowerCase() === accType.toLowerCase()) {
+                console.log('beginning update');
+                rest.updateBalance(session, upBal[index].id)
+            }
+        }
+
+        
+        //console.log(upBal);
+        /*for (var index in upBal) {
+            
+            
+            if(customer === upBal[index].customerID && account.toLowerCase() === upBal[index].accountType.toLowerCase()){
+                
+                console.log('Updating balance now');
+
+                //rest.updateBalance(url, session, upBal[index].id, amount);
+                rest.updateBalance(url, session, upBal[index].id);
+            }
+        }*/
+
+}
+
+
+
+
+
+exports.deleteFavouriteFood = function deleteFavouriteFood(session,username,favouriteFood){
+    var url  = 'https://msafood.azurewebsites.net/tables/msafood';
+
+
+    rest.getFavouriteFood(url,session, username,function(message,session,username){
+     var   allFoods = JSON.parse(message);
+
+        for(var i in allFoods) {
+
+            if (allFoods[i].favouriteFood === favouriteFood && allFoods[i].username === username) {
+
+                console.log(allFoods[i]);
+
+                rest.deleteFavouriteFood(url,session,username,favouriteFood, allFoods[i].id ,handleDeletedFoodResponse)
+
+            }
+        }
+
+
+    });
+
+
+};
 
 /*exports.displayFavouriteFood = function getFavouriteFood(session, username){
     var url = 'https://msafood.azurewebsites.net/tables/msafood';
