@@ -1,4 +1,6 @@
 var builder = require('botbuilder');
+var converter = require('./CurrencyConverter');
+var balance = require('./AccountBalance');
 
 
 exports.startDialog = function (bot) {
@@ -7,22 +9,25 @@ exports.startDialog = function (bot) {
 
     bot.recognizer(recognizer);
 
-    bot.dialog('MakePayment', function (session, args) {
+    bot.dialog('CheckBalance', function (session, args) {
 
             // Pulls out the food entity from the session if it exists
-            var foodEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'amount');
+            //var customer = builder.EntityRecognizer.findEntity(args.intent.entities, 'customerID');
+            var customer = "2728827";
+            var account = builder.EntityRecognizer.findEntity(args.intent.entities, 'account');
 
             // Checks if the food entity was found
-            if (foodEntity) {
-                session.send('Making payment of %s', foodEntity.entity);
+            if (account) {
+                session.send('Checking balance of %s', account.entity);    
+                balance.displayAccountBalance(session, customer, account.entity);
                 // Insert logic here later
             } else {
-                session.send("No payment identified! Please try again");
+                session.send("No account balance identified! Please try again");
             
         }
 
     }).triggerAction({
-        matches: 'MakePayment'
+        matches: 'CheckBalance'
     });
 
     bot.dialog('ExchangeCurrency', function (session, args) {
@@ -33,99 +38,13 @@ exports.startDialog = function (bot) {
             //console.log(args.intent.entities[0]);
             //console.log(args.intent.entities[1]);
 
-            session.send(new builder.Message(session).addAttachment({
-                contentType: "application/vnd.microsoft.card.adaptive",
-                content: {
-                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-                        "type": "AdaptiveCard",
-                        "version": "1.0",
-                        "body": [
-                          {
-                            "type": "TextBlock",
-                            "text": "Exchange Rate Converter",
-                            "size": "large",
-                            "weight": "bolder"
-                          },
-                         {
-                             "type": "ColumnSet",
-                             "columns": [
-                                 {
-                                     "type": "Column",
-                                     "items": [
-                                        {
-                                            "type": "Input.ChoiceSet",
-                                            "id": "snooze",
-                                            "style":"compact",
-                                            "value": "5",
-                                            "choices": [
-                                              {
-                                                "title": "New Zealand",
-                                                "value": "NZD",
-                                                "isSelected": true
-                                              },
-                                              {
-                                                "title": "Australia",
-                                                "value": "AUD"
-                                              },
-                                              {
-                                                "title": "United States",
-                                                "value": "USD"
-                                              }
-                                            ]
-                                          }
-                                     ]
-                                 },
-                                 {
-                                     "type": "Column",
-                                     "items": [
-                                         {
-                                             "type": "TextBlock",
-                                             "text": "to",
-                                             "size": "medium",
-                                             "horizontalAlignment": "center"
-                                         }
-                                    ]   
-                                 },
-                                 {
-                                     "type": "Column",
-                                     "items": [
-                                        {
-                                            "type": "Input.ChoiceSet",
-                                            "id": "snooze",
-                                            "style":"compact",
-                                            "value": "5",
-                                            "choices": [
-                                              {
-                                                "title": "New Zealand",
-                                                "value": "NZD",
-                                                "isSelected": true
-                                              },
-                                              {
-                                                "title": "Australia",
-                                                "value": "AUD"
-                                              },
-                                              {
-                                                "title": "United States",
-                                                "value": "USD"
-                                              }
-                                            ]
-                                          }
-                                     ]
-                                 }
-                             ]
-                         }
-                        ],
-                        "actions" : [
-                            {
-                                "type": "Action.Submit",
-                                "title": "Convert",
-                                "data": {
-                                    "x": 13
-                                }
-                            }
-                        ]
-                      }
-            }));
+            if (session.message && session.message.value) {
+                // A Card's Submit Action obj was received
+               console.log(session.message.value);
+            }
+            else {
+                converter.displayConverter(session);
+            }
     
 
             // Checks if the food entity was found
