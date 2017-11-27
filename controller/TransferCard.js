@@ -1,7 +1,23 @@
 var builder = require('botbuilder');
 
-exports.displayTransferCard = function(session) {
+exports.displayTransferOptionsCard = function(session, accounts) {
     
+    var accountOptions = [];
+    
+    for(var index in accounts){
+        var accountItem = {};
+        // var accountItem = {};
+        // accountItem.title = accounts[index];
+        // accountOptions.push(accountItem);
+
+            accountItem.title = accounts[index];
+            accountItem.value = accounts[index];
+
+            //accountItem += "\"" + "title" + "\""  + ":" + "\"" + accounts[index] + "\"";
+            accountOptions.push(accountItem);
+    }
+    //console.log('It is here');
+    //console.log(accountOptions);
     
     session.send(new builder.Message(session).addAttachment({
         contentType: "application/vnd.microsoft.card.adaptive",
@@ -12,7 +28,7 @@ exports.displayTransferCard = function(session) {
                 "body": [
                   {
                     "type": "TextBlock",
-                    "text": "Exchange Rate Converter",
+                    "text": "Transfer Balance",
                     "size": "large",
                     "weight": "bolder"
                   },
@@ -24,24 +40,8 @@ exports.displayTransferCard = function(session) {
                              "items": [
                                 {
                                     "type": "Input.ChoiceSet",
-                                    "id": "base",
-                                    "style":"compact",
-                                    "value": "5",
-                                    "choices": [
-                                      {
-                                        "title": "New Zealand",
-                                        "value": "NZD",
-                                        "isSelected": true
-                                      },
-                                      {
-                                        "title": "Australia",
-                                        "value": "AUD"
-                                      },
-                                      {
-                                        "title": "United States",
-                                        "value": "USD"
-                                      }
-                                    ]
+                                    "id": "fromAccount",
+                                    "choices": accountOptions
                                   }
                              ]
                          },
@@ -61,39 +61,35 @@ exports.displayTransferCard = function(session) {
                              "items": [
                                 {
                                     "type": "Input.ChoiceSet",
-                                    "id": "conversionTo",
-                                    "style":"compact",
-                                    "value": "5",
-                                    "choices": [
-                                      {
-                                        "title": "New Zealand",
-                                        "value": "NZD",
-                                        "isSelected": true
-                                      },
-                                      {
-                                        "title": "Australia",
-                                        "value": "AUD"
-                                      },
-                                      {
-                                        "title": "United States",
-                                        "value": "USD"
-                                      }
-                                    ]
+                                    "id": "toAccount",
+                                    "choices": accountOptions
                                   }
                              ]
-                         }
+                         },
+                         {
+                            "type": "Column",
+                            "width": "auto",
+                            "items": [
+                               {
+                                   "type": "Input.Text",
+                                   "id": "amount",
+                                   "placeholder": "amount"
+                                 }
+                            ]
+                        }
                      ]
                  }
                 ],
                 "actions" : [
                     {
                         "type": "Action.Submit",
-                        "title": "Convert",
-                        //"data": {
-                            //"x": 13
-                        //}
+                        "title": "Transfer",
                     }
                 ]
               }
     }));
 }
+
+// exports.displayTransferComplete = fuction(session, accounts) {
+
+// }

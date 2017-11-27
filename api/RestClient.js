@@ -10,9 +10,9 @@ exports.getAccountBalance = function getData(url, session, customer, account, ca
     });
 }
 
-exports.updateBalance = function updataData(session, id) {
+exports.updateBalance = function updataData(session, id, amount) {
     var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
-    var amount = '7000';
+    // var amount = '7000';
     var option = {
         url: url + "\\" + id,
         method: 'PATCH',

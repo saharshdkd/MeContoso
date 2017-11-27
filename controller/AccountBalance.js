@@ -1,5 +1,6 @@
 var rest = require('../API/Restclient');
 var balanceCard = require('./BalanceCard');
+var transferCard = require('./TransferCard');
 
 exports.displayAccountBalance = function getBalanceData(session, customer, account) {
     var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
@@ -68,31 +69,85 @@ function handleUpdateBalanceResponse (message, session, customer, account) {
 
         var upBal = JSON.parse(message);
 
+        // console.log(upBal);
+        // console.log(account);
+
+        var fromAcc = account.fromAccount;
+        var toAcc = account.toAccount;
+        var amount = account.amount;
+        var display = {};
+
+        // console.log(fromAcc);
+        // console.log(toAcc);
+        // console.log(amount);
+
         for (var index in upBal) {
             var custIDRecieved = upBal[index].customerID;
             var accType = upBal[index].accountType;
+            var oldBal = upBal[index].balance;
     
-            if(customer === custIDRecieved && account.toLowerCase() === accType.toLowerCase()) {
-                console.log('beginning update');
-                rest.updateBalance(session, upBal[index].id)
+            if(customer === custIDRecieved && fromAcc.toLowerCase() === accType.toLowerCase()) {
+                
+                var change = oldBal - amount;
+                //console.log(change);
+                //rest.updateBalance(session, upBal[index].id, change);
+            }
+
+            if(customer === custIDRecieved && toAcc.toLowerCase() === accType.toLowerCase()) {
+                var change = parseInt(oldBal) + parseInt(amount);
+                //console.log(change);
+                display.account = toAcc;
+                display.oldbal = oldBal.toString();
+                display.bal = change.toString();
+                console.log(display);
+                //rest.updateBalance(session, upBal[index].id, change);
             }
         }
-
-        
-        //console.log(upBal);
-        /*for (var index in upBal) {
-            
-            
-            if(customer === upBal[index].customerID && account.toLowerCase() === upBal[index].accountType.toLowerCase()){
-                
-                console.log('Updating balance now');
-
-                //rest.updateBalance(url, session, upBal[index].id, amount);
-                rest.updateBalance(url, session, upBal[index].id);
-            }
-        }*/
+        // transferCard.displayTransferComplete(session, display);
 
 }
+
+exports.displayTransferOptions = function getTransferOptions(session, customer) {
+    var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
+    var account = "empty";
+    console.log('Reached here');
+    rest.getAccountBalance(url, session, customer, account, handleTransferOptions)
+}
+
+function handleTransferOptions(message, session, customer, account) {
+    var transferOptions = JSON.parse(message);
+    //console.log(balanceOptions.length);
+    //var l = balanceOptions.length;
+    //console.log(transferOptions);
+    var accounts = [];
+    for(var i=0; i < transferOptions.length; i++) {
+        var custIDReceived = transferOptions[i].customerID;
+        var accType = transferOptions[i].accountType
+        //var accounts = [];
+
+        if(customer === custIDReceived){
+            accounts.push(accType);
+        }
+        // balanceCard.displayBalanceOptions(session, accounts);
+        
+    }
+    //console.log(accounts);
+    transferCard.displayTransferOptionsCard(session, accounts);
+
+}
+
+//console.log(upBal);
+/*for (var index in upBal) {
+    
+    
+    if(customer === upBal[index].customerID && account.toLowerCase() === upBal[index].accountType.toLowerCase()){
+        
+        console.log('Updating balance now');
+
+        //rest.updateBalance(url, session, upBal[index].id, amount);
+        rest.updateBalance(url, session, upBal[index].id);
+    }
+}*/
 
 // exports.deleteFavouriteFood = function deleteFavouriteFood(session,username,favouriteFood){
 //     var url  = 'https://msafood.azurewebsites.net/tables/msafood';

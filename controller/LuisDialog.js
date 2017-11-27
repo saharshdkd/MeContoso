@@ -65,12 +65,29 @@ exports.startDialog = function (bot) {
 
     bot.dialog('TransferBalance', function(session, args){
 
-        var account = builder.EntityRecognizer.findEntity(args.intent.entities, 'account');
-        var amount = builder.EntityRecognizer.findEntity(args.intent.entities, 'amount');
+        var customer = "2728827";
+        
+        //console.log('Transfer Balance intent');
 
-        if(!amount && !account){
-            transfer.displayTransferOptions(session);
+        if (session.message && session.message.value) {
+            //balance.displayAccountBalance(session, customer, session.message.value.selectedAccount);
+                // A Card's Submit Action obj was received
+            balance.updateAccountBalance(session, customer, session.message.value);
+            //console.log(session.message.value);
         }
+        else{
+
+            var account = builder.EntityRecognizer.findEntity(args.intent.entities, 'account');
+            var amount = builder.EntityRecognizer.findEntity(args.intent.entities, 'amount');
+
+            if(amount && account){
+                console.log('Doing something random');
+            }
+            else{
+                console.log('Trigger transfer options');
+                balance.displayTransferOptions(session, customer);
+            }
+    }
 
     }).triggerAction({
         matches: 'TransferBalance'
@@ -81,12 +98,6 @@ exports.startDialog = function (bot) {
 
 
 }
-
-
-
-
-
-
 
 
 // // Function is called when the user inputs an attachment

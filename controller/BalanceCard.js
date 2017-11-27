@@ -68,7 +68,7 @@ exports.displayBalanceOptions = function(session, accounts) {
             //accountItem += "\"" + "title" + "\""  + ":" + "\"" + accounts[index] + "\"";
             accountOptions.push(accountItem);
     }
-    console.log(accountOptions);
+    //console.log(accountOptions);
 
     session.send(new builder.Message(session).addAttachment({
         contentType: "application/vnd.microsoft.card.adaptive",
