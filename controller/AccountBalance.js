@@ -75,7 +75,8 @@ function handleUpdateBalanceResponse (message, session, customer, account) {
         var fromAcc = account.fromAccount;
         var toAcc = account.toAccount;
         var amount = account.amount;
-        var display = {};
+        var transferTo = {};
+        var transferFrom = {};
 
         // console.log(fromAcc);
         // console.log(toAcc);
@@ -88,29 +89,38 @@ function handleUpdateBalanceResponse (message, session, customer, account) {
     
             if(customer === custIDRecieved && fromAcc.toLowerCase() === accType.toLowerCase()) {
                 
+                // var transferFrom = {};
                 var change = oldBal - amount;
+                transferFrom.fromaccount = fromAcc;
+                transferFrom.oldfrombal = oldBal;
+                transferFrom.newfrombal = change;
                 //console.log(change);
-                //rest.updateBalance(session, upBal[index].id, change);
+                rest.updateBalance(session, upBal[index].id, change);
             }
 
             if(customer === custIDRecieved && toAcc.toLowerCase() === accType.toLowerCase()) {
+                
+                // var transferTo = {};
                 var change = parseInt(oldBal) + parseInt(amount);
                 //console.log(change);
-                display.account = toAcc;
-                display.oldbal = oldBal.toString();
-                display.bal = change.toString();
-                console.log(display);
-                //rest.updateBalance(session, upBal[index].id, change);
+                transferTo.toaccount = toAcc;
+                transferTo.oldbal = oldBal.toString();
+                transferTo.newbal = change.toString();
+                //console.log(display);
+                rest.updateBalance(session, upBal[index].id, change);
             }
+            // console.log(transferFrom);
+            // console.log(transferTo);
         }
-        // transferCard.displayTransferComplete(session, display);
+        transferCard.displayTransferCompleteCard(session, transferTo);
+        rest.postTransferData(session, customer, transferFrom, transferTo, amount);
 
 }
 
 exports.displayTransferOptions = function getTransferOptions(session, customer) {
     var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
     var account = "empty";
-    console.log('Reached here');
+    //console.log('Reached here');
     rest.getAccountBalance(url, session, customer, account, handleTransferOptions)
 }
 

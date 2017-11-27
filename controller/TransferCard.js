@@ -90,6 +90,38 @@ exports.displayTransferOptionsCard = function(session, accounts) {
     }));
 }
 
-// exports.displayTransferComplete = fuction(session, accounts) {
+exports.displayTransferCompleteCard = function(session, accounts) {
 
-// }
+    session.send(new builder.Message(session).addAttachment({
+        contentType: "application/vnd.microsoft.card.adaptive",
+        content: {
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                "type": "AdaptiveCard",
+                "version": "1.0",
+                "body": [
+                  {
+                    "type": "TextBlock",
+                    "text": "Transfer Complete",
+                    "size": "large",
+                    "weight": "bolder"
+                  },
+                  {
+                      "type": "Container",
+                      "items": [
+                          {
+                              "type": "TextBlock",
+                              "text": "Previous " + accounts.toaccount + " balance was: " + accounts.oldbal,
+                              "isSubtle": true
+                          },
+                          {
+                                "type": "TextBlock",
+                                "text": "Your new " + accounts.toaccount + " balance is: " + accounts.newbal,
+                                "weight": "bolder",
+                                "size": "large"
+                          }
+                      ]
+                  }
+                ]
+              }
+    }));
+}
