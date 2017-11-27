@@ -1,6 +1,8 @@
 var builder = require('botbuilder');
 var converter = require('./CurrencyConverter');
 var balance = require('./AccountBalance');
+var transfer = require('./TransferCard');
+var balanceCard = require('./BalanceCard');
 
 
 exports.startDialog = function (bot) {
@@ -9,26 +11,24 @@ exports.startDialog = function (bot) {
 
     bot.recognizer(recognizer);
 
-    bot.dialog('CheckBalance', function (session, args) {
+    bot.dialog('ViewBalance', function (session, args) {
 
             // Pulls out the food entity from the session if it exists
             //var customer = builder.EntityRecognizer.findEntity(args.intent.entities, 'customerID');
             var customer = "2728827";
             var account = builder.EntityRecognizer.findEntity(args.intent.entities, 'account');
-            var amount = "6000"
             // Checks if the food entity was found
             if (account) {
-                //session.send('Checking balance of %s', account.entity);    
-                //balance.displayAccountBalance(session, customer, account.entity);
-        
-                balance.updateAccountBalance(session, customer, account.entity);
+                session.send('Checking balance of %s', account.entity);
+                //balanceCard.displayBalanceCard(session);    
+                balance.displayAccountBalance(session, customer, account.entity);
             } else {
-                session.send("No account balance identified! Please try again");
-            
+                //session.send("No account balance identified! Please try again");
+                balance.displayBalanceOptions(session, customer);
         }
 
     }).triggerAction({
-        matches: 'CheckBalance'
+        matches: 'ViewBalance'
     });
 
     bot.dialog('ExchangeCurrency', function (session, args) {
@@ -46,77 +46,47 @@ exports.startDialog = function (bot) {
             else {
                 converter.displayConverter(session);
             }
-    
-
-            // Checks if the food entity was found
-        /*    if (foodEntity) {
-                session.send('Converting %s', foodEntity.entity);
-                // Insert logic here later
-            } else {
-                session.send("No currency identified! Please try again");
-            
-        }*/
 
     }).triggerAction({
         matches: 'ExchangeCurrency'
     });
 
-    /*bot.dialog('DeleteFavourite', [
-        // Insert delete logic here later
-    ]).triggerAction({
-        matches: 'DeleteFavourite'
+    bot.dialog('TransferBalance', function(session, args){
 
-    });
+        var account = builder.EntityRecognizer.findEntity(args.intent.entities, 'account');
+        var amount = builder.EntityRecognizer.findEntity(args.intent.entities, 'amount');
 
-    bot.dialog('GetCalories', function (session, args) {
-        if (!isAttachment(session)) {
-
-            // Pulls out the food entity from the session if it exists
-            var foodEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'food');
-
-            // Checks if the for entity was found
-            if (foodEntity) {
-                session.send('Calculating calories in %s...', foodEntity.entity);
-                // Insert logic here later
-
-            } else {
-                session.send("No food identified! Please try again");
-            }
+        if(!amount && !account){
+            transfer.displayTransferOptions(session);
         }
+
     }).triggerAction({
-        matches: 'GetCalories'
-    });
+        matches: 'TransferBalance'
 
-    bot.dialog('GetFavouriteFood', [
-        // Insert favourite food logic here later
-    ]).triggerAction({
-        matches: 'GetFavouriteFood'
-    });
-
-    bot.dialog('LookForFavourite', [
-        // Insert logic here later
-    ]).triggerAction({
-        matches: 'LookForFavourite'
     });
 
 
-    bot.dialog('WelcomeIntent', [
-        // Insert logic here later
-    ]).triggerAction({
-        matches: 'WelcomeIntent'
-    });*/
+
+
 }
 
-// Function is called when the user inputs an attachment
-function isAttachment(session) { 
-    var msg = session.message.text;
-    if ((session.message.attachments && session.message.attachments.length > 0) || msg.includes("http")) {
+
+
+
+
+
+
+
+// // Function is called when the user inputs an attachment
+// function isAttachment(session) { 
+//     var msg = session.message.text;
+//     if ((session.message.attachments && session.message.attachments.length > 0) || msg.includes("http")) {
         
-        //call custom vision here later
-        return true;
-    }
-    else {
-        return false;
-    }
-}
+//         //call custom vision here later
+//         return true;
+//     }
+//     else {
+//         return false;
+//     }
+// }
 

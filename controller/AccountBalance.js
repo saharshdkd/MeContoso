@@ -1,4 +1,5 @@
 var rest = require('../API/Restclient');
+var balanceCard = require('./BalanceCard');
 
 exports.displayAccountBalance = function getBalanceData(session, customer, account) {
     var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
@@ -19,7 +20,30 @@ function handleAccountBalanceResponse(message, session, customer, account){
         //console.log(account.toLowerCase());
 
         if(customer === custIDRecieved && account.toLowerCase() === accType.toLowerCase()) {
-            session.send("Your %s balance is %s", account, balance);
+            //session.send("Your %s balance is %s", account, balance);
+            balanceCard.displayBalanceCard(session, balance, accType);
+        }
+    }
+}
+
+exports.displayBalanceOptions = function getBalanceOptions(session, customer){
+    var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
+    var account = "empty";
+    rest.getAccountBalance(url, session, customer, account, handleBalanceOptions)
+
+}
+
+function handleBalanceOptions(message, session, customer, account) {
+    var balanceOptions = JSON.parse(message);
+
+    for(var index in balanceOptions) {
+        var custIDReceived = balanceOptions[index].customerID;
+        var accType = balanceOptions[index].accountType
+        var accounts = [];
+
+        if(customer === custIDReceived){
+            accounts.push(accType);
+            console.log(accounts);
         }
     }
 }
