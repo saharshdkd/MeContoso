@@ -35,18 +35,27 @@ exports.displayBalanceOptions = function getBalanceOptions(session, customer){
 
 function handleBalanceOptions(message, session, customer, account) {
     var balanceOptions = JSON.parse(message);
-
-    for(var index in balanceOptions) {
-        var custIDReceived = balanceOptions[index].customerID;
-        var accType = balanceOptions[index].accountType
-        var accounts = [];
+    //console.log(balanceOptions.length);
+    //var l = balanceOptions.length;
+    var accounts = [];
+    for(var i=0; i < balanceOptions.length; i++) {
+        var custIDReceived = balanceOptions[i].customerID;
+        var accType = balanceOptions[i].accountType
+        //var accounts = [];
 
         if(customer === custIDReceived){
             accounts.push(accType);
-            console.log(accounts);
         }
+        // balanceCard.displayBalanceOptions(session, accounts);
+        
     }
+    balanceCard.displayBalanceOptions(session, accounts);
+
 }
+
+
+
+/////////////////// BELOW IS FOR THE UPDATE FUNCTION.
 
 exports.updateAccountBalance = function updateData (session, customer, account) {
     var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
@@ -85,33 +94,29 @@ function handleUpdateBalanceResponse (message, session, customer, account) {
 
 }
 
+// exports.deleteFavouriteFood = function deleteFavouriteFood(session,username,favouriteFood){
+//     var url  = 'https://msafood.azurewebsites.net/tables/msafood';
 
 
+//     rest.getFavouriteFood(url,session, username,function(message,session,username){
+//      var   allFoods = JSON.parse(message);
+
+//         for(var i in allFoods) {
+
+//             if (allFoods[i].favouriteFood === favouriteFood && allFoods[i].username === username) {
+
+//                 console.log(allFoods[i]);
+
+//                 rest.deleteFavouriteFood(url,session,username,favouriteFood, allFoods[i].id ,handleDeletedFoodResponse)
+
+//             }
+//         }
 
 
-exports.deleteFavouriteFood = function deleteFavouriteFood(session,username,favouriteFood){
-    var url  = 'https://msafood.azurewebsites.net/tables/msafood';
+//     });
 
 
-    rest.getFavouriteFood(url,session, username,function(message,session,username){
-     var   allFoods = JSON.parse(message);
-
-        for(var i in allFoods) {
-
-            if (allFoods[i].favouriteFood === favouriteFood && allFoods[i].username === username) {
-
-                console.log(allFoods[i]);
-
-                rest.deleteFavouriteFood(url,session,username,favouriteFood, allFoods[i].id ,handleDeletedFoodResponse)
-
-            }
-        }
-
-
-    });
-
-
-};
+// };
 
 /*exports.displayFavouriteFood = function getFavouriteFood(session, username){
     var url = 'https://msafood.azurewebsites.net/tables/msafood';

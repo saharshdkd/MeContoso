@@ -13,9 +13,18 @@ exports.startDialog = function (bot) {
 
     bot.dialog('ViewBalance', function (session, args) {
 
+        var customer = "2728827";    
+        
+        if (session.message && session.message.value) {
+            balance.displayAccountBalance(session, customer, session.message.value.selectedAccount);
+                // A Card's Submit Action obj was received
+            //console.log(session.message.value.selectedAccount);
+        }
+        else{
+
             // Pulls out the food entity from the session if it exists
             //var customer = builder.EntityRecognizer.findEntity(args.intent.entities, 'customerID');
-            var customer = "2728827";
+            // var customer = "2728827";
             var account = builder.EntityRecognizer.findEntity(args.intent.entities, 'account');
             // Checks if the food entity was found
             if (account) {
@@ -25,7 +34,10 @@ exports.startDialog = function (bot) {
             } else {
                 //session.send("No account balance identified! Please try again");
                 balance.displayBalanceOptions(session, customer);
+            }
+
         }
+
 
     }).triggerAction({
         matches: 'ViewBalance'
