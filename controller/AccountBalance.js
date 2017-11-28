@@ -179,7 +179,8 @@ exports.getSimpleConversion = function getConversion(session, base, convertTo, a
     
         rest.getCurrencyData(url, session, base, convertTo, amount, handleCurrencyConversion);
     
-    }
+}
+
 
 function handleCurrencyConversion(conversion, session, base, convertTo, amount) {
 
@@ -189,14 +190,6 @@ function handleCurrencyConversion(conversion, session, base, convertTo, amount) 
     converter.displayConversion(session, converted.result, base, convertTo, amount);
 
 }
-
-
-
-
-
-
-
-
 
 
 exports.displayCurrencyConverter = function getCurrencyData(session) {
@@ -238,16 +231,6 @@ function handleCurrencyConverter(message, session) {
     converter.displayConverter(session, currencies);
 
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
