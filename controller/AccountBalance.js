@@ -1,6 +1,9 @@
 var rest = require('../API/Restclient');
 var balanceCard = require('./BalanceCard');
 var transferCard = require('./TransferCard');
+var converter = require('./CurrencyConverter');
+
+// The following block of function are for the View Balance feature.
 
 exports.displayAccountBalance = function getBalanceData(session, customer, account) {
     var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
@@ -55,8 +58,7 @@ function handleBalanceOptions(message, session, customer, account) {
 }
 
 
-
-/////////////////// BELOW IS FOR THE UPDATE FUNCTION.
+//The following block of functions are for the Transfer Balance feature.
 
 exports.updateAccountBalance = function updateData (session, customer, account) {
     var url = 'http://mecontoso.azurewebsites.net/tables/AccountBalance';
@@ -145,6 +147,95 @@ function handleTransferOptions(message, session, customer, account) {
     transferCard.displayTransferOptionsCard(session, accounts);
 
 }
+
+// The following block of functions are for the Currency Converter/Exchange feature.
+
+exports.getCurrencyConversion = function getConversion(session, details){
+
+    var amount = details.amount;
+    var base = details.base;
+    var convertTo = details.conversionTo;
+
+    var url = 'http://apilayer.net/api/convert?access_key=247ee104e918787465cfd409201edfe2&from=' + base +  '&to=' + convertTo + '&amount=' + amount;
+
+    // console.log(amount);
+    // console.log(base);
+    // console.log(convertTo);
+    // rest.getCurrencyData(url, session, base, convertTo, handleCurrencyConversion);
+
+    rest.getCurrencyData(url, session, base, convertTo, handleCurrencyConversion);
+
+}
+
+function handleCurrencyConversion(conversion, session, base, convertTo) {
+
+    var converted = JSON.parse(conversion);
+    // console.log(converted.result);
+
+    converter.displayConversion(session, converted.result, base, convertTo);
+
+}
+
+
+
+
+
+
+
+
+
+
+exports.displayCurrencyConverter = function getCurrencyData(session) {
+    url = 'http://apilayer.net/api/list?access_key=247ee104e918787465cfd409201edfe2';  
+    
+    rest.getCurrencyList(url, session, handleCurrencyConverter);
+    //'http://apilayer.net/api/list?access_key='
+    // accesskey = '247ee104e918787465cfd409201edfe2';
+
+    // converter.displayConverter()
+}
+
+function handleCurrencyConverter(message, session) {
+    
+    var currencylist = JSON.parse(message);
+    //console.log(currencylist);
+    
+    // console.log(currencylist.currencies);
+    // console.log(currencylist.currencies.length);
+
+    // Will need to loop through the currencies and be able to separate the code (id) and currency (name)
+    var currencies = [];
+    for(var index in currencylist.currencies){
+        var code = index;
+        var currencyName = currencylist.currencies[index];
+
+        // console.log(code);
+        // console.log(currencyName);
+        // console.log(currencylist.currencies);
+       
+        var currencyItem = {};
+
+        currencyItem.title = currencyName + " " + "(" + code + ")";
+        currencyItem.value = code;
+        
+        currencies.push(currencyItem);
+    }
+    // console.log(currencies);
+    converter.displayConverter(session, currencies);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 //console.log(upBal);
 /*for (var index in upBal) {

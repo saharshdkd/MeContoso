@@ -13,7 +13,8 @@ exports.startDialog = function (bot) {
 
     bot.dialog('ViewBalance', function (session, args) {
 
-        var customer = "2728827";    
+        var customer = "2728827";
+        // console.log('ViewBalance intent found!');    
         
         if (session.message && session.message.value) {
             balance.displayAccountBalance(session, customer, session.message.value.selectedAccount);
@@ -43,25 +44,28 @@ exports.startDialog = function (bot) {
         matches: 'ViewBalance'
     });
 
-    bot.dialog('ExchangeCurrency', function (session, args) {
+    // bot.dialog('ExchangeCurrency', function (session, args) {
 
-            // Pulls out the food entity from the session if it exists
-            //var foodEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'currency');
+    //         //var foodEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'currency');
 
-            //console.log(args.intent.entities[0]);
-            //console.log(args.intent.entities[1]);
+    //         //console.log(args.intent.entities[0]);
+    //         //console.log(args.intent.entities[1]);
 
-            if (session.message && session.message.value) {
-                // A Card's Submit Action obj was received
-               console.log(session.message.value);
-            }
-            else {
-                converter.displayConverter(session);
-            }
+    //         console.log('ExchangeCurrency intent found!');
 
-    }).triggerAction({
-        matches: 'ExchangeCurrency'
-    });
+    //         if (session.message && session.message.value) {
+    //             // A Card's Submit Action obj was received
+    //            //console.log(session.message.value);
+    //            balance.getCurrencyConversion(session, session.message.value);
+    //         }
+    //         else {
+    //             //converter.displayConverter(session);
+    //             balance.displayCurrencyConverter(session)
+    //         }
+
+    // }).triggerAction({
+    //     matches: 'ExchangeCurrency'
+    // });
 
     bot.dialog('TransferBalance', function(session, args){
 
@@ -95,7 +99,28 @@ exports.startDialog = function (bot) {
     });
 
 
+    bot.dialog('ExchangeCurrency', function (session, args) {
+        
+    //var foodEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'currency');
 
+    //console.log(args.intent.entities[0]);
+    //console.log(args.intent.entities[1]);
+
+    console.log('ExchangeCurrency intent found!');
+
+    if (session.message && session.message.value) {
+        // A Card's Submit Action obj was received
+        //console.log(session.message.value);
+        balance.getCurrencyConversion(session, session.message.value);
+    }
+    else {
+        //converter.displayConverter(session);
+        balance.displayCurrencyConverter(session)
+    }
+
+    }).triggerAction({
+    matches: 'ExchangeCurrency'
+    });
 
 }
 

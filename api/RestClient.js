@@ -1,4 +1,5 @@
 var request = require('request');
+var balance = require('../controller/AccountBalance')
 
 exports.getAccountBalance = function getData(url, session, customer, account, callback) {
     request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function handleGetResponse(err,res,body){
@@ -70,6 +71,29 @@ exports.postTransferData = function(session, customer, from, to, amount) {
         });
 
     
+}
+
+exports.getCurrencyList = function conversionData(url, session,callback){
+    
+    request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function handleGetResponse(err,res,body){
+        if(err){
+            console.log(err);
+        }else {
+            callback(body, session);
+        }
+    });
+}
+
+exports.getCurrencyData = function conversionData(url, session, base, convertTo, callback){
+    
+    request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function handleGetResponse(err,res,body){
+        if(err){
+            console.log(err);
+        }else {
+            callback(body, session, base, convertTo);
+            // balance.handleCurrencyConversion(body, session, base, convertTo);
+        }
+    });
 }
 
 
