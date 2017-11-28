@@ -108,25 +108,32 @@ exports.startDialog = function (bot) {
 
     if (session.message && session.message.value) {
         // A Card's Submit Action obj was received
-        //console.log(session.message.value);
+        console.log(session.message.value);
+        // var details = session.message.value;
         balance.getCurrencyConversion(session, session.message.value);
+        // balance.getCurrencyConversion(session, base, convertTo, amount);
     }
     else {
 
-        var currencyEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'currency');
+        var baseEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'base');
+        var convertToEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'convertTo');
         var amountEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'amount');
 
-        //console.log(args.intent.entities);
+        console.log(args.intent.entities);
+        // var random = JSON.parse(args.intent.entities);
+        // console.log(random);
 
-        for(var index in args.intent.entities){
+        // for(var index in args.intent.entities){
 
-            if(args.intent.entities[index].type === 'currency'){
-                // console.log(args.intent.entities[index].entity);
-            }
-        }
-
-        if(!currencyEntity && !amountEntity){
+        //     if(args.intent.entities[index].type === 'currency'){
+        //         console.log(args.intent.entities[index].entity);
+        //         // cur.title = args.intent.entities[index].entity;
+        //     }
+        //    // console.log(cur);
+        // }
+        if(amountEntity && baseEntity && convertToEntity){
             console.log('It reaches here');
+            balance.getSimpleConversion(session, baseEntity.entity.toUpperCase(), convertToEntity.entity.toUpperCase(), amountEntity.entity);
         }
         else{
             //converter.displayConverter(session);

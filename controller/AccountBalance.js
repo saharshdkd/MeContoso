@@ -157,7 +157,7 @@ exports.getCurrencyConversion = function getConversion(session, details){
     var convertTo = details.conversionTo;
 
     var url = 'http://apilayer.net/api/convert?access_key=247ee104e918787465cfd409201edfe2&from=' + base +  '&to=' + convertTo + '&amount=' + amount;
-    console.log(details);
+    //console.log(details);
     // console.log(amount);
     // console.log(base);
     // console.log(convertTo);
@@ -166,6 +166,20 @@ exports.getCurrencyConversion = function getConversion(session, details){
     rest.getCurrencyData(url, session, base, convertTo, amount, handleCurrencyConversion);
 
 }
+
+exports.getSimpleConversion = function getConversion(session, base, convertTo, amount){
+    
+    
+        var url = 'http://apilayer.net/api/convert?access_key=247ee104e918787465cfd409201edfe2&from=' + base +  '&to=' + convertTo + '&amount=' + amount;
+        //console.log(details);
+        // console.log(amount);
+        // console.log(base);
+        // console.log(convertTo);
+        // rest.getCurrencyData(url, session, base, convertTo, handleCurrencyConversion);
+    
+        rest.getCurrencyData(url, session, base, convertTo, amount, handleCurrencyConversion);
+    
+    }
 
 function handleCurrencyConversion(conversion, session, base, convertTo, amount) {
 
