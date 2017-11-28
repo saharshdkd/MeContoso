@@ -63,6 +63,8 @@ function handleDeleteResponse(body, session) {
     var itemsDeleted = JSON.parse(body);
     console.log(itemsDeleted);
 
+    session.send('Item(s) removed/deleted successfully!');
+
     // var deletedItems = [];
     // for(var index in itemsDeleted){
 
@@ -79,33 +81,9 @@ function handleDeleteResponse(body, session) {
 
     // }
     // console.log(deletedItems);
-    console.log('Over here');
+    //console.log('Over here');
 
 }
-
-// exports.deleteFavouriteFood = function deleteFavouriteFood(session,username,favouriteFood){
-//     var url  = 'https://msafood.azurewebsites.net/tables/msafood';
-
-
-//     rest.getFavouriteFood(url,session, username,function(message,session,username){
-//      var   allFoods = JSON.parse(message);
-
-//         for(var i in allFoods) {
-
-//             if (allFoods[i].favouriteFood === favouriteFood && allFoods[i].username === username) {
-
-//                 console.log(allFoods[i]);
-
-//                 rest.deleteFavouriteFood(url,session,username,favouriteFood, allFoods[i].id ,handleDeletedFoodResponse)
-
-//             }
-//         }
-
-
-//     });
-
-
-// };
 
 function handlegetListItems(message, session, choosenList){
 
