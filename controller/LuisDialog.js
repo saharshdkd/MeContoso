@@ -29,7 +29,7 @@ exports.startDialog = function (bot) {
             var account = builder.EntityRecognizer.findEntity(args.intent.entities, 'account');
             // Checks if the food entity was found
             if (account) {
-                session.send('Checking balance of %s', account.entity);
+                //session.send('Checking balance of %s', account.entity);
                 //balanceCard.displayBalanceCard(session);    
                 balance.displayAccountBalance(session, customer, account.entity);
             } else {
@@ -101,12 +101,10 @@ exports.startDialog = function (bot) {
 
     bot.dialog('ExchangeCurrency', function (session, args) {
         
-    //var foodEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'currency');
 
     //console.log(args.intent.entities[0]);
     //console.log(args.intent.entities[1]);
-
-    console.log('ExchangeCurrency intent found!');
+    // console.log('ExchangeCurrency intent found!');
 
     if (session.message && session.message.value) {
         // A Card's Submit Action obj was received
@@ -114,8 +112,26 @@ exports.startDialog = function (bot) {
         balance.getCurrencyConversion(session, session.message.value);
     }
     else {
-        //converter.displayConverter(session);
-        balance.displayCurrencyConverter(session)
+
+        var currencyEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'currency');
+        var amountEntity = builder.EntityRecognizer.findEntity(args.intent.entities, 'amount');
+
+        //console.log(args.intent.entities);
+
+        for(var index in args.intent.entities){
+
+            if(args.intent.entities[index].type === 'currency'){
+                // console.log(args.intent.entities[index].entity);
+            }
+        }
+
+        if(!currencyEntity && !amountEntity){
+            console.log('It reaches here');
+        }
+        else{
+            //converter.displayConverter(session);
+            balance.displayCurrencyConverter(session)
+        }
     }
 
     }).triggerAction({

@@ -84,13 +84,13 @@ exports.getCurrencyList = function conversionData(url, session,callback){
     });
 }
 
-exports.getCurrencyData = function conversionData(url, session, base, convertTo, callback){
+exports.getCurrencyData = function conversionData(url, session, base, convertTo, amount, callback){
     
     request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function handleGetResponse(err,res,body){
         if(err){
             console.log(err);
         }else {
-            callback(body, session, base, convertTo);
+            callback(body, session, base, convertTo, amount);
             // balance.handleCurrencyConversion(body, session, base, convertTo);
         }
     });

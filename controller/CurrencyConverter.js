@@ -66,14 +66,14 @@ exports.displayConverter = function(session, currencies) {
     }));
 }
 
-exports.displayConversion = function displayConversionResult(session, result, base, convertTo) {
+exports.displayConversion = function displayConversionResult(session, result, base, convertTo, amount) {
 
     var baseCur = base.slice(0,-1);
     var convertToCur = convertTo.slice(0,-1);
 
-    var url = 'http://www.countryflags.io/'+ baseCur.toLowerCase() + '/flat/64.png';
-    console.log(url);
-    console.log(baseCur);
+    // var url = 'http://www.countryflags.io/'+ baseCur.toLowerCase() + '/flat/64.png';
+    // console.log(url);
+    // console.log(baseCur);
 
     // console.log(baseCur);
     //console.log(result);
@@ -140,7 +140,7 @@ exports.displayConversion = function displayConversionResult(session, result, ba
 
                     {
                         "type": "TextBlock",
-                        "text": result.toString(),
+                        "text": amount.toString() + " " + base.toString() + " = " + result.toString().slice(0, -2) + " " + convertTo.toString(),
                         "size": "extraLarge",
                         "weight": "bolder",
                         "horizontalAlignment": "center"
