@@ -26,7 +26,7 @@ exports.displayConverter = function(session, currencies) {
                                     "id": "base",
                                     // "separator": true,
                                     // "style":"expanded",
-                                    "value": "5",
+                                    "value": "NZD",
                                     "choices": currencies
                                   },
                                   {
@@ -40,7 +40,7 @@ exports.displayConverter = function(session, currencies) {
                                     "id": "conversionTo",
                                     // "separator": true,
                                     // "style":"expanded",
-                                    "value": "5",
+                                    "value": "USD",
                                     "choices": currencies
                                 },
                                 {
