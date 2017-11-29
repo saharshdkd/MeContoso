@@ -77,12 +77,43 @@ exports.displayBalanceOptions = function(session, accounts) {
                 "type": "AdaptiveCard",
                 "version": "1.0",
                 "body": [
-                  {
-                    "type": "TextBlock",
-                    "text": "Account Balance",
-                    "size": "large",
-                    "weight": "bolder"
-                  },
+                    {
+                        "type": "ColumnSet",
+                        "columns": [
+                            {
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [
+                                    {
+                                        "type": "Image",
+                                        "url": "http://mecontosoweb.azurewebsites.net/img/logodark.png",
+                                        "size": "small",
+                                        "horizontalAlignment": "left"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Account Balance",
+                                        "size": "large",
+                                        "weight": "bolder",
+                                        "horizontalAlignment": "left"
+                                    }
+                                ]
+                            }
+                            
+                        ]
+                    },
+                //   {
+                //     "type": "TextBlock",
+                //     "text": "Account Balance",
+                //     "size": "large",
+                //     "weight": "bolder"
+                //   },
                   {
                       "type": "Input.ChoiceSet",
                       "id": "selectedAccount",

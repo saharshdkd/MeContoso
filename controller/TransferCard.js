@@ -26,17 +26,48 @@ exports.displayTransferOptionsCard = function(session, accounts) {
                 "type": "AdaptiveCard",
                 "version": "1.0",
                 "body": [
-                  {
-                    "type": "TextBlock",
-                    "text": "Transfer Balance",
-                    "size": "large",
-                    "weight": "bolder"
-                  },
+                    {
+                        "type": "ColumnSet",
+                        "columns": [
+                            {
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [
+                                    {
+                                        "type": "Image",
+                                        "url": "http://mecontosoweb.azurewebsites.net/img/logodark.png",
+                                        "size": "small",
+                                        "horizontalAlignment": "left"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Transfer Balance",
+                                        "size": "large",
+                                        "weight": "bolder"
+                                    }
+                                ]
+                            }
+                            
+                        ]
+                    },
+                //   {
+                //     "type": "TextBlock",
+                //     "text": "Transfer Balance",
+                //     "size": "large",
+                //     "weight": "bolder"
+                //   },
                  {
                      "type": "ColumnSet",
                      "columns": [
                          {
                              "type": "Column",
+                             "width": "auto",
                              "items": [
                                 {
                                     "type": "Input.ChoiceSet",
@@ -47,6 +78,7 @@ exports.displayTransferOptionsCard = function(session, accounts) {
                          },
                          {
                              "type": "Column",
+                             "width": "auto",
                              "items": [
                                  {
                                      "type": "TextBlock",
@@ -58,6 +90,7 @@ exports.displayTransferOptionsCard = function(session, accounts) {
                          },
                          {
                              "type": "Column",
+                             "width": "auto",
                              "items": [
                                 {
                                     "type": "Input.ChoiceSet",

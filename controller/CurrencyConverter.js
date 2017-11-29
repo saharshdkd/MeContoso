@@ -9,13 +9,37 @@ exports.displayConverter = function(session, currencies) {
                 "type": "AdaptiveCard",
                 "version": "1.0",
                 "body": [
-                  {
-                    "type": "TextBlock",
-                    "text": "Exchange Rate Converter",
-                    "size": "large",
-                    "weight": "bolder"
-                  },
-                 {
+                    {
+                        "type": "ColumnSet",
+                        "columns": [
+                            {
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [
+                                    {
+                                        "type": "Image",
+                                        "url": "http://mecontosoweb.azurewebsites.net/img/logodark.png",
+                                        "size": "small",
+                                        "horizontalAlignment": "left"
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "Column",
+                                "size": "auto",
+                                "items": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Exchange Rate Converter",
+                                        "size": "large",
+                                        "weight": "bolder"
+                                    }
+                                ]
+                            }
+                            
+                        ]
+                    },
+                {
                      "type": "ColumnSet",
                      "columns": [
                          {
