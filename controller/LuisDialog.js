@@ -5,6 +5,8 @@ var transfer = require('./TransferCard');
 var balanceCard = require('./BalanceCard');
 var customVision = require('./CustomVision');
 var wishList = require('./WishList');
+var rest = require('../API/Restclient');
+var welcome = require('./WelcomeCard');
 
 
 exports.startDialog = function (bot) {
@@ -89,11 +91,23 @@ exports.startDialog = function (bot) {
             // console.log('ExchangeCurrency intent found!');
         if(!isAttachment(session)) {
             if (session.message && session.message.value) {
+
+                if(session.message.value.item){
+                    rest.postListItem(session, session.message.value.item, session.message.value.selectedList);
+                }
+                else{
                 // A Card's Submit Action obj was received
                 console.log(session.message.value);
                 // var details = session.message.value;
                 balance.getCurrencyConversion(session, session.message.value);
                 // balance.getCurrencyConversion(session, base, convertTo, amount);
+
+                }
+                // // A Card's Submit Action obj was received
+                // console.log(session.message.value);
+                // // var details = session.message.value;
+                // balance.getCurrencyConversion(session, session.message.value);
+                // // balance.getCurrencyConversion(session, base, convertTo, amount);
             }
             else {
 
@@ -147,6 +161,23 @@ exports.startDialog = function (bot) {
         }
     }).triggerAction({
         matches: 'EditWish'
+    });
+
+    bot.dialog('Welcome', function(session, args) {
+        
+
+        if (session.message && session.message.value) {
+            // A Card's Submit Action obj was received
+            //console.log(session.message.value);
+            // wishList.getListItems(session, session.message.value)
+        }
+        else {
+            
+            welcome.displayWelcomeCard(session);
+        }
+
+    }).triggerAction({
+        matches: 'Welcome'
     });
 
 

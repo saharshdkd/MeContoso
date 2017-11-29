@@ -101,3 +101,28 @@ function handlegetListItems(message, session, choosenList){
     wishCard.displayListItems(session, choosenList, itemList)
 
 }
+
+exports.addNewItem = function(item, session) {
+
+    console.log(item);
+    var customer = "2728827";
+    url = 'http://mecontoso.azurewebsites.net/tables/WishList';
+    rest.getWishList(url, session, customer, item, function(body, session, customer, item){
+        
+        var listOptions = JSON.parse(body);
+        // console.log(item);
+        var wishList = [];
+        for(var i=0; i < listOptions.length; i++) {
+            var custIDReceived = listOptions[i].customerID;
+            var listName = listOptions[i].wishListName;
+            //var accounts = [];
+    
+            if(customer === custIDReceived){
+                wishList.push(listName);
+            }
+        }
+        wishCard.addNewItemCard(session, wishList, item);
+
+    })
+
+}

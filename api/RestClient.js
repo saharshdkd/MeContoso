@@ -143,6 +143,52 @@ exports.deleteListItems = function deleteData(url,session, id, callback){
     })
 
 };
+
+
+exports.getWishList = function conversionData(url, session, customer, item, callback){
+    
+        request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function handleGetResponse(err,res,body){
+            if(err){
+                console.log(err);
+            }else {
+                callback(body, session, customer,item);
+                
+            }
+        });
+}
+
+exports.postListItem = function(session, item, selectedList) {
+    
+        //console.log(item);
+        console.log(selectedList.toString());
+        console.log(item);
+        var url = 'http://mecontoso.azurewebsites.net/tables/WishListItems';
+        var options = {
+            url: url,
+            method: 'POST',
+            headers: {
+                'ZUMO-API-VERSION': '2.0.0',
+                'Content-Type':'application/json'
+            },
+            json: {
+                "wishListName": selectedList,
+                "itemName": item
+            }
+            };
+            
+            request(options, function (error, response, body) {
+            if (!error && response.statusCode === 201) {
+                console.log('Item posted');
+                session.send('Awesome! the item has been saved.');
+            }
+            else{
+                console.log('Going to show an error');
+                console.log(response.statusCode);
+            }
+            });
+    
+        
+    }
 /*exports.getFavouriteFood = function getData(url, session, username, callback){
     request.get(url, {'headers':{'ZUMO-API-VERSION': '2.0.0'}}, function handleGetResponse(err,res,body){
         if(err){

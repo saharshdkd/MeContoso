@@ -1,4 +1,5 @@
 var request = require('request'); //node module for http post requests
+var wishList = require('./WishList');
 
 exports.retreiveMessage = function (session){
 
@@ -11,14 +12,16 @@ exports.retreiveMessage = function (session){
         },
         body: { 'Url': session.message.text }
     }, function(error, response, body){
-        console.log(validResponse(body));
-        session.send(validResponse(body));
+        //console.log(validResponse(body));
+        session.send(validResponse(body, session));
     });
 }
 
-function validResponse(body){
+function validResponse(body, session){
     if (body && body.Predictions && body.Predictions[0].Tag){
-        return "This is " + body.Predictions[0].Tag
+        //return "This is " + body.Predictions[0].Tag
+        wishList.addNewItem(body.Predictions[0].Tag, session);
+        // console.log(body.Predictions[0])
     } else{
         console.log('Oops, please try again!');
     }
