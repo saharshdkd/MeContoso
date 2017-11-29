@@ -37,7 +37,7 @@ exports.displayBalanceCard = function(session, balance, account) {
                               "items": [
                                   {
                                       "type": "TextBlock",
-                                      "text": balance,
+                                      "text": "$ " + balance,
                                       "size": "extraLarge",
                                       "weight": "bold",
                                       "horizontalAlignment": "left"
