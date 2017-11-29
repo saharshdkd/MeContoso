@@ -166,15 +166,17 @@ exports.startDialog = function (bot) {
     bot.dialog('Welcome', function(session, args) {
         
 
-        if (session.message && session.message.value) {
-            // A Card's Submit Action obj was received
-            //console.log(session.message.value);
-            // wishList.getListItems(session, session.message.value)
-        }
-        else {
-            
+        // if (session.message && session.message.value) {
+        //     // A Card's Submit Action obj was received
+
+
+        //     console.log(session.message.value.command);
+        //     if(session.message.value.command)
+        //         bot.dialog(session.message.value.command);
+        // }
+        // else {  
             welcome.displayWelcomeCard(session);
-        }
+        // }
 
     }).triggerAction({
         matches: 'Welcome'
